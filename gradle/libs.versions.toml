@@ -1,5 +1,6 @@
 [versions]
 agp = "8.2.0-alpha15"
+etebarian-meow-bottom-navigation = "1.2.0"
 kotlin = "1.8.21"
 core-ktx = "1.10.1"
 junit = "4.13.2"
@@ -8,6 +9,7 @@ espresso-core = "3.5.1"
 appcompat = "1.6.1"
 material = "1.9.0"
 constraintlayout = "2.1.4"
+meow-bottom-navigation = "1.3.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -17,6 +19,8 @@ espresso-core = { group = "androidx.test.espresso", name = "espresso-core", vers
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+meow-bottom-navigation = { module = "com.etebarian:meow-bottom-navigation", version.ref = "meow-bottom-navigation" }
+meow-bottom-navigation-v120 = { module = "com.etebarian:meow-bottom-navigation", version.ref = "etebarian-meow-bottom-navigation" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
