@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRevealLayout"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:mode="same_level"
+    app:dragEdge="right"
+    android:layout_marginTop="10dp"
+>
+
+    <!-- Your secondary layout here -->
+    <LinearLayout
+        android:id="@+id/delete_task"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_marginLeft="30dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_delete"/>
+    </LinearLayout>
+
+    <!-- Your main layout here -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:background="@drawable/background_item_note"
+>
+        <CheckBox
+            android:id="@+id/check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/text_task"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Task"
+            android:textSize="16dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center_vertical"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/color_box"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icon_check_box_grey"
+            android:layout_gravity="center"
+            android:layout_marginRight="4dp"/>
+        <TextView
+            android:id="@+id/text_type"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="None"
+            android:textSize="12dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+            android:layout_marginRight="8dp"/>
+    </LinearLayout>
+
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

@@ -15,7 +15,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:fontFamily="@font/montserrat_regular"
         android:hint="Write your task"
+        android:background="@color/white"
+        android:textSize="16dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="16dp"
@@ -28,21 +31,29 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_task"
         android:orientation="horizontal"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="16dp">
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="12dp"
+            android:background="@drawable/background_type_left"
             android:src="@drawable/icon_check_box_grey"
             android:layout_gravity="center"/>
         <TextView
             android:id="@+id/type"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="None"
             android:layout_gravity="center"
+            android:gravity="center"
             android:textSize="16dp"
-            android:textStyle="bold"
-            android:paddingLeft="8dp"/>
+            android:paddingLeft="8dp"
+            android:paddingRight="12dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/grey_dark"
+            android:background="@drawable/background_type_right"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -61,6 +72,7 @@
         android:text="Object type"
         android:textSize="12dp"
         android:layout_marginLeft="20dp"
+        android:fontFamily="@font/montserrat_regular"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear_confirm"/>
 
@@ -93,7 +105,7 @@
             android:text="Personal"
             android:layout_gravity="center"
             android:textSize="16dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_bold"
             android:paddingLeft="8dp"/>
     </LinearLayout>
 
@@ -125,7 +137,7 @@
             android:text="Study"
             android:layout_gravity="center"
             android:textSize="16dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_bold"
             android:paddingLeft="8dp"/>
     </LinearLayout>
 
@@ -157,7 +169,7 @@
             android:text="Work"
             android:layout_gravity="center"
             android:textSize="16dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_bold"
             android:paddingLeft="8dp"/>
     </LinearLayout>
 
@@ -189,7 +201,7 @@
             android:text="None"
             android:layout_gravity="center"
             android:textSize="16dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_bold"
             android:paddingLeft="8dp"/>
     </LinearLayout>
 
@@ -210,7 +222,7 @@
         app:layout_constraintTop_toBottomOf="@id/view_5"
         android:textColor="@color/green"
         android:textSize="16dp"
-        android:textStyle="bold"
+        android:fontFamily="@font/montserrat_bold"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="20dp"

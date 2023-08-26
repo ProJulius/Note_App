@@ -47,4 +47,10 @@ dependencies {
 
     implementation libs.meow.bottom.navigation.v120
     implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.circleimageview
+    implementation libs.swipe.reveal.layout
+    implementation libs.androidx.recyclerview
+
+    implementation libs.androidx.room.runtime
+    annotationProcessor libs.androidx.room.compiler
 }

@@ -1,4 +1,4 @@
-package com.example.note_app.splash_screen
+package com.example.note_app.view.splash_screen
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
