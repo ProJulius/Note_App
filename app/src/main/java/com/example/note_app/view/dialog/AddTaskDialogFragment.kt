@@ -1,19 +1,17 @@
-package com.example.note_app.view.bottom_sheet_dialog
+package com.example.note_app.view.dialog
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.note_app.R
 import com.example.note_app.databinding.FragmentAddTaskDialogBinding
 import com.example.note_app.interface_callback.AddTaskDialogFragmnetCallback
-import com.example.note_app.view.list_page.ListFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class AddTaskDialogFragment(val callback: AddTaskDialogFragmnetCallback) : BottomSheetDialogFragment() {
+class AddTaskDialogFragment(private val callback: AddTaskDialogFragmnetCallback) : BottomSheetDialogFragment() {
     private var _binding: FragmentAddTaskDialogBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -37,25 +35,25 @@ class AddTaskDialogFragment(val callback: AddTaskDialogFragmnetCallback) : Botto
     private fun chooseType() {
         binding.linearPersonal.setOnClickListener {
             binding.type.text = "Personal"
-            binding.checkbox.setImageResource(R.drawable.icon_check_box_blue)
+            binding.checkbox.setImageResource(R.drawable.icon_type_personal)
         }
         binding.linearStudy.setOnClickListener {
             binding.type.text = "Study"
-            binding.checkbox.setImageResource(R.drawable.icon_check_box_green)
+            binding.checkbox.setImageResource(R.drawable.icon_type_study)
         }
         binding.linearWork.setOnClickListener {
             binding.type.text = "Work"
-            binding.checkbox.setImageResource(R.drawable.icon_check_box_red)
+            binding.checkbox.setImageResource(R.drawable.icon_type_work)
         }
         binding.linearNone.setOnClickListener {
             binding.type.text = "None"
-            binding.checkbox.setImageResource(R.drawable.icon_check_box_grey)
+            binding.checkbox.setImageResource(R.drawable.icon_type_none)
         }
     }
 
     private fun confirmNote() {
         binding.buttonConfirm.setOnClickListener {
-            val dataText = binding.editTextTask.text.toString()
+            val dataTask = binding.editTextTask.text.toString()
             val dataType = binding.type.text.toString()
             val dataColor : String = when (dataType) {
                 "None" -> {
@@ -71,8 +69,9 @@ class AddTaskDialogFragment(val callback: AddTaskDialogFragmnetCallback) : Botto
                     "Blue"
                 }
             }
+            val dataCheck = false
 
-            callback.onDataTaskReceived(dataText, dataType, dataColor)
+            callback.onDataTaskReceived(dataTask, dataType, dataColor, dataCheck)
             dismiss()
         }
     }

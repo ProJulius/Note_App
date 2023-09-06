@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         app:mbn_circleColor="@color/purple"
         app:mbn_backgroundBottomColor="@color/purple"
-        app:mbn_defaultIconColor="@color/white"
+        app:mbn_defaultIconColor="@color/grey_dark"
         app:mbn_rippleColor="#2f424242"
         app:mbn_selectedIconColor="@color/white"
         android:layout_alignParentBottom="true"/>

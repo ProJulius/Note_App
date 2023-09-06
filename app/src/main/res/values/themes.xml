@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.Note_App" parent="Base.Theme.Note_App" />
+
+    <style name="YourCustomDialogFragmentStyle" parent="android:Theme.Dialog">
+
+        <item name="android:windowBackground">@drawable/background_dialog</item>
+        <!-- Other style attributes for your dialog fragment -->
+    </style>
 </resources>

@@ -13,15 +13,19 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.note_app.R
 import com.example.note_app.adapter.TaskAdapter
 import com.example.note_app.constants.CONSTANTS
+import com.example.note_app.database.TaskDatabase
 import com.example.note_app.databinding.FragmentListBinding
 import com.example.note_app.interface_callback.AddTaskDialogFragmnetCallback
+import com.example.note_app.interface_callback.DeleteTaskCallback
+import com.example.note_app.interface_callback.DeleteTaskDialogCallback
 import com.example.note_app.model.Task
-import com.example.note_app.view.bottom_sheet_dialog.AddTaskDialogFragment
+import com.example.note_app.view.dialog.AddTaskDialogFragment
+import com.example.note_app.view.dialog.DeleteTaskDialogFragment
 import kotlin.math.abs
 
 
 @Suppress("UNUSED_EXPRESSION")
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), DeleteTaskCallback{
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
     private var startX = 0f
@@ -44,27 +48,12 @@ class ListFragment : Fragment() {
     }
 
     private fun manageRecyclerView() {
-        val itemList = listOf(
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-            Task("Task 1", "None", R.drawable.icon_check_box_grey, false),
-        )
-
+        val itemList = TaskDatabase.getDatabase(requireContext()).taskDAO().getListTask()
         val linearLayoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.recyclerView.layoutManager = linearLayoutManager
 
-        val adapter = TaskAdapter(itemList)
+        val adapter = TaskAdapter(itemList, this)
         binding.recyclerView.adapter = adapter
-
     }
     @SuppressLint("ClickableViewAccessibility", "CutPasteId")
     private fun moveButton() {
@@ -113,8 +102,10 @@ class ListFragment : Fragment() {
         if (currentTime - lastClickTime >= CONSTANTS.DEBOUNCE_DELAY) {
             lastClickTime = currentTime
             val addTaskDialogFragment = AddTaskDialogFragment(object : AddTaskDialogFragmnetCallback {
-                override fun onDataTaskReceived(dataTask: String, dataType: String, dataColor: String) {
-
+                override fun onDataTaskReceived(dataTask: String, dataType: String, dataColor: String, dataCheck: Boolean) {
+                    val newTask = Task(task = dataTask, type = dataType, color = dataColor, isCompleted = dataCheck)
+                    TaskDatabase.getDatabase(requireContext()).taskDAO().insert(newTask)
+                    updateData()
                 }
 
                 override fun onHidenCallback() {
@@ -125,6 +116,30 @@ class ListFragment : Fragment() {
             addTaskDialogFragment.show(parentFragmentManager, addTaskDialogFragment.tag)
         }
     }
+
+    override fun onDeleteButtonClick(item: Task) {
+        val deleteTaskDialogFragment = DeleteTaskDialogFragment(object : DeleteTaskDialogCallback{
+            override fun confirmDelete(check: Boolean) {
+                if(check) {
+                    TaskDatabase.getDatabase(requireContext()).taskDAO().delete(item)
+                    updateData()
+                }
+            }
+            override fun onHidenCallback() {
+                hideDimmer()
+            }
+        }, R.style.YourCustomDialogFragmentStyle)
+
+        deleteTaskDialogFragment.setStyle(R.drawable.background_dialog, R.style.YourCustomDialogFragmentStyle)
+        binding.dimmer.visibility = View.VISIBLE
+        deleteTaskDialogFragment.show(parentFragmentManager, deleteTaskDialogFragment.tag)
+    }
+
+
+    fun updateData() {
+        binding.recyclerView.adapter = TaskAdapter(TaskDatabase.getDatabase(requireContext()).taskDAO().getListTask(), this)
+    }
+
     fun hideDimmer() {
         binding.dimmer.visibility = View.GONE
     }

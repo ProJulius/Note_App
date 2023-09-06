@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.bottom_sheet_dialog.AddTaskDialogFragment"
-    android:background="@drawable/background_dialog">
+    tools:context=".view.dialog.AddTaskDialogFragment"
+    android:background="@drawable/background_bottom_sheet_dialog">
 
     <EditText
         android:id="@+id/edit_text_task"
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="12dp"
             android:background="@drawable/background_type_left"
-            android:src="@drawable/icon_check_box_grey"
+            android:src="@drawable/icon_type_none"
             android:layout_gravity="center"/>
         <TextView
             android:id="@+id/type"
@@ -97,7 +97,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/icon_check_box_blue"
+            android:src="@drawable/icon_type_personal"
             android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"
@@ -129,7 +129,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/icon_check_box_green"
+            android:src="@drawable/icon_type_study"
             android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"
@@ -161,7 +161,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/icon_check_box_red"
+            android:src="@drawable/icon_type_work"
             android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"
@@ -193,7 +193,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/icon_check_box_grey"
+            android:src="@drawable/icon_type_none"
             android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"

@@ -1,32 +1,61 @@
 package com.example.note_app.adapter
 
-import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.example.note_app.databinding.ItemTaskBinding
 import com.example.note_app.model.Task
-import com.chauthai.swipereveallayout.ViewBinderHelper
+import com.example.note_app.R
+import com.example.note_app.database.TaskDatabase
+import com.example.note_app.interface_callback.DeleteTaskCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class TaskAdapter(private val listTask: List<Task>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>(){
-    class ViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+
+class TaskAdapter(
+    private val listTask: List<Task>,
+    private val deleteTaskCallback: DeleteTaskCallback,
+    ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>(){
+    inner class ViewHolder(
+        private val binding: ItemTaskBinding,
+    ) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Task) {
             binding.textTask.text = item.task
             binding.textType.text = item.type
-            binding.colorBox.setImageResource(item.color)
+            if(item.type.equals("None")) {
+                binding.colorBox.setImageResource(R.drawable.icon_type_none)
+            }
+            else if(item.type.equals("Work")) {
+                binding.colorBox.setImageResource(R.drawable.icon_type_work)
+            }
+            else if(item.type.equals("Study")) {
+                binding.colorBox.setImageResource(R.drawable.icon_type_study)
+            }
+            else {
+                binding.colorBox.setImageResource(R.drawable.icon_type_personal)
+            }
+
             binding.checkBox.isChecked = item.isCompleted
+
             binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
-                // Handle checkbox state change
+                item.isCompleted = isChecked
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    TaskDatabase.getDatabase(binding.root.context).taskDAO().update(item)
+                }
+            }
+
+            binding.deleteTask.setOnClickListener {
+                deleteTaskCallback.onDeleteButtonClick(item)
+            }
+
+            itemView.setOnClickListener() {
+                Log.d("Hoàng Anh", "đần")
             }
         }
-
-        override fun onClick(v: View?) {
-        }
-
 
 
     }
@@ -35,6 +64,7 @@ class TaskAdapter(private val listTask: List<Task>) : RecyclerView.Adapter<TaskA
         val view = ItemTaskBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(view)
     }
+
 
     override fun getItemCount(): Int {
         return listTask.size
