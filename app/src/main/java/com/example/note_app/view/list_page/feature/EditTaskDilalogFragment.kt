@@ -46,6 +46,7 @@ class EditTaskDilalogFragment(private val callback: EditTaskDialogFragmentCallba
             dismiss()
         }
 
+        // Choose type of item
         binding.buttonChoose.setOnClickListener {
             val chooseTypeDialogFragment = ChooseTypeDialogFragment(object :ChooseTypeDialogFragmentCallback{
                 override fun chooseType(type: String) {
