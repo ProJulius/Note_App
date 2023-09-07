@@ -17,15 +17,18 @@ import com.example.note_app.database.TaskDatabase
 import com.example.note_app.databinding.FragmentListBinding
 import com.example.note_app.interface_callback.AddTaskDialogFragmnetCallback
 import com.example.note_app.interface_callback.DeleteTaskCallback
-import com.example.note_app.interface_callback.DeleteTaskDialogCallback
+import com.example.note_app.interface_callback.DeleteTaskDialogFragmentCallback
+import com.example.note_app.interface_callback.EditTaskCallback
+import com.example.note_app.interface_callback.EditTaskDialogFragmentCallback
 import com.example.note_app.model.Task
-import com.example.note_app.view.dialog.AddTaskDialogFragment
-import com.example.note_app.view.dialog.DeleteTaskDialogFragment
+import com.example.note_app.view.list_page.feature.AddTaskDialogFragment
+import com.example.note_app.view.list_page.feature.DeleteTaskDialogFragment
+import com.example.note_app.view.list_page.feature.EditTaskDilalogFragment
 import kotlin.math.abs
 
 
 @Suppress("UNUSED_EXPRESSION")
-class ListFragment : Fragment(), DeleteTaskCallback{
+class ListFragment : Fragment(), DeleteTaskCallback, EditTaskCallback{
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
     private var startX = 0f
@@ -47,14 +50,17 @@ class ListFragment : Fragment(), DeleteTaskCallback{
         manageRecyclerView()
     }
 
+    // Khởi tạo recycler view
     private fun manageRecyclerView() {
         val itemList = TaskDatabase.getDatabase(requireContext()).taskDAO().getListTask()
         val linearLayoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.recyclerView.layoutManager = linearLayoutManager
 
-        val adapter = TaskAdapter(itemList, this)
+        val adapter = TaskAdapter(itemList, this, this)
         binding.recyclerView.adapter = adapter
     }
+
+    // Xử lí logic cho nút add
     @SuppressLint("ClickableViewAccessibility", "CutPasteId")
     private fun moveButton() {
         binding.buttonAdd.setOnTouchListener { _, event ->
@@ -97,12 +103,19 @@ class ListFragment : Fragment(), DeleteTaskCallback{
             true
         }
     }
+
+    // Thêm một task
     private fun addNote() {
         val currentTime = System.currentTimeMillis()
         if (currentTime - lastClickTime >= CONSTANTS.DEBOUNCE_DELAY) {
             lastClickTime = currentTime
             val addTaskDialogFragment = AddTaskDialogFragment(object : AddTaskDialogFragmnetCallback {
-                override fun onDataTaskReceived(dataTask: String, dataType: String, dataColor: String, dataCheck: Boolean) {
+                override fun onDataTaskReceived(
+                    dataTask: String,
+                    dataType: String,
+                    dataColor: String,
+                    dataCheck: Boolean
+                ) {
                     val newTask = Task(task = dataTask, type = dataType, color = dataColor, isCompleted = dataCheck)
                     TaskDatabase.getDatabase(requireContext()).taskDAO().insert(newTask)
                     updateData()
@@ -117,8 +130,9 @@ class ListFragment : Fragment(), DeleteTaskCallback{
         }
     }
 
+    // Xử lí xự kiện khi click vào thùng rác
     override fun onDeleteButtonClick(item: Task) {
-        val deleteTaskDialogFragment = DeleteTaskDialogFragment(object : DeleteTaskDialogCallback{
+        val deleteTaskDialogFragment = DeleteTaskDialogFragment(object : DeleteTaskDialogFragmentCallback{
             override fun confirmDelete(check: Boolean) {
                 if(check) {
                     TaskDatabase.getDatabase(requireContext()).taskDAO().delete(item)
@@ -135,11 +149,35 @@ class ListFragment : Fragment(), DeleteTaskCallback{
         deleteTaskDialogFragment.show(parentFragmentManager, deleteTaskDialogFragment.tag)
     }
 
+    // Xử lí sự kiện khi click vào 1 item
+    override fun onItemButtonClick(item: Task) {
+        val deleteTaskDialogFragment = EditTaskDilalogFragment(object :EditTaskDialogFragmentCallback{
+            override fun onDataTaskReceived(
+                dataTask: String,
+                dataType: String,
+                dataColor: String,
+            ) {
+                item.task = dataTask
+                item.type = dataType
+                item.color = dataColor
+                TaskDatabase.getDatabase(requireContext()).taskDAO().update(item)
+                updateData()
+            }
 
-    fun updateData() {
-        binding.recyclerView.adapter = TaskAdapter(TaskDatabase.getDatabase(requireContext()).taskDAO().getListTask(), this)
+            override fun onHidenCallback() {
+                hideDimmer()
+            }
+        })
+        binding.dimmer.visibility = View.VISIBLE
+        deleteTaskDialogFragment.show(parentFragmentManager, deleteTaskDialogFragment.tag)
     }
 
+    // Cập nhật recycler view sau khi cập nhật room
+    fun updateData() {
+        binding.recyclerView.adapter = TaskAdapter(TaskDatabase.getDatabase(requireContext()).taskDAO().getListTask(), this, this)
+    }
+
+    // Bật xám màn hình khi mở dialog
     fun hideDimmer() {
         binding.dimmer.visibility = View.GONE
     }

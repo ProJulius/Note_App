@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chauthai.swipereveallayout.SwipeRevealLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeRevealLayout"
     android:layout_width="match_parent"
     android:layout_height="70dp"
@@ -26,6 +27,7 @@
 
     <!-- Your main layout here -->
     <LinearLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
@@ -38,11 +40,12 @@
         <TextView
             android:id="@+id/text_task"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="35dp"
             android:text="Task"
             android:textSize="16dp"
             android:fontFamily="@font/montserrat_regular"
             android:gravity="center_vertical"
+            android:layout_gravity="center"
             android:layout_weight="1"/>
         <ImageView
             android:id="@+id/color_box"

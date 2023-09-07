@@ -1,4 +1,4 @@
-package com.example.note_app.view.dialog
+package com.example.note_app.view.list_page.feature
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface

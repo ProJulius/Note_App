@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.dialog.DeleteTaskDialogFragment"
+    tools:context=".view.list_page.feature.DeleteTaskDialogFragment"
     app:cardCornerRadius="24dp"
     app:cardBackgroundColor="@color/white">
 
@@ -16,7 +16,7 @@
             android:id="@+id/text_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bạn có chắc muốn xoá Task này không?"
+            android:text="Bạn có chắc muốn xoá nhiệm vụ này không?"
             android:textSize="16dp"
             android:textStyle="bold"
             android:textColor="@color/black"

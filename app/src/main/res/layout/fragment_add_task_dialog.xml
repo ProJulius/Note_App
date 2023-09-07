@@ -5,14 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.dialog.AddTaskDialogFragment"
+    tools:context=".view.list_page.feature.AddTaskDialogFragment"
     android:background="@drawable/background_bottom_sheet_dialog">
+
+    <View
+        android:id="@+id/view_0"
+        android:layout_width="50dp"
+        android:layout_height="3dp"
+        android:background="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
         android:id="@+id/edit_text_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/view_0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:fontFamily="@font/montserrat_regular"
@@ -21,7 +30,7 @@
         android:textSize="16dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         />
 
     <LinearLayout

@@ -1,4 +1,4 @@
-package com.example.note_app.view.dialog
+package com.example.note_app.view.list_page.feature
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -6,13 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.example.note_app.R
 import com.example.note_app.databinding.FragmentDeleteTaskDialogBinding
-import com.example.note_app.interface_callback.DeleteTaskDialogCallback
+import com.example.note_app.interface_callback.DeleteTaskDialogFragmentCallback
 
 
 class DeleteTaskDialogFragment(
-    private val callback: DeleteTaskDialogCallback,
+    private val callback: DeleteTaskDialogFragmentCallback,
     yourCustomDialogFragmentStyle: Int
 ) : DialogFragment() {
     private var _binding: FragmentDeleteTaskDialogBinding? = null
