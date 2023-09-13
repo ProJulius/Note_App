@@ -1,4 +1,4 @@
-package com.example.note_app.view.list_page.feature
+package com.example.note_app.view.list_page.feature_dialog
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.note_app.databinding.FragmentDeleteTaskDialogBinding
-import com.example.note_app.interface_callback.DeleteTaskDialogFragmentCallback
+import com.example.note_app.interface_callback_list_page.DeleteTaskDialogFragmentCallback
 
 
 class DeleteTaskDialogFragment(

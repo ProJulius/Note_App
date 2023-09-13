@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.list_page.feature.EditTaskDilalogFragment">
+    android:background="@drawable/background_bottom_sheet_dialog"
+    tools:context=".view.list_page.feature_dialog.EditTaskDilalogFragment">
 
     <View
         android:id="@+id/view_0"
@@ -16,25 +17,21 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/taskInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
+        android:background="@drawable/background_edit_text"
         app:layout_constraintTop_toBottomOf="@id/view_0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="16dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="16dp"
         android:layout_marginTop="40dp"
-        android:hint="Task">
+        android:hint="Task"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/taskEditText"
-            android:textSize="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/choose_type"

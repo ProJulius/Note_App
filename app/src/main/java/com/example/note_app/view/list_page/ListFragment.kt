@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,26 +16,33 @@ import com.example.note_app.adapter.TaskAdapter
 import com.example.note_app.constants.CONSTANTS
 import com.example.note_app.database.TaskDatabase
 import com.example.note_app.databinding.FragmentListBinding
-import com.example.note_app.interface_callback.AddTaskDialogFragmnetCallback
-import com.example.note_app.interface_callback.DeleteTaskCallback
-import com.example.note_app.interface_callback.DeleteTaskDialogFragmentCallback
-import com.example.note_app.interface_callback.EditTaskCallback
-import com.example.note_app.interface_callback.EditTaskDialogFragmentCallback
+import com.example.note_app.interface_callback_adapter.CheckTaskCallback
+import com.example.note_app.interface_callback_adapter.DeleteTaskCallback
+import com.example.note_app.interface_callback_adapter.EditTaskCallback
+import com.example.note_app.interface_callback_list_page.AddTaskDialogFragmnetCallback
+import com.example.note_app.interface_callback_list_page.DeleteTaskDialogFragmentCallback
+import com.example.note_app.interface_callback_list_page.EditTaskDialogFragmentCallback
 import com.example.note_app.model.Task
-import com.example.note_app.view.list_page.feature.AddTaskDialogFragment
-import com.example.note_app.view.list_page.feature.DeleteTaskDialogFragment
-import com.example.note_app.view.list_page.feature.EditTaskDilalogFragment
+import com.example.note_app.view.list_page.feature_dialog.AddTaskDialogFragment
+import com.example.note_app.view.list_page.feature_dialog.DeleteTaskDialogFragment
+import com.example.note_app.view.list_page.feature_dialog.EditTaskDilalogFragment
 import kotlin.math.abs
 
 
-@Suppress("UNUSED_EXPRESSION")
-class ListFragment : Fragment(), DeleteTaskCallback, EditTaskCallback{
+class ListFragment : Fragment()
+                    , DeleteTaskCallback
+                    , EditTaskCallback
+                    , CheckTaskCallback
+{
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
     private var startX = 0f
     private var startY = 0f
     private var isMoving = false
-    private var lastClickTime = 0L
+    private var lastClickAddTime = 0L
+    private var lastClickItemTime = 0L
+    private var checkSort = false
+    private var checkboxSort = "khong"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +56,96 @@ class ListFragment : Fragment(), DeleteTaskCallback, EditTaskCallback{
 
         moveButton()
         manageRecyclerView()
+        createSortDialog()
+        filterTask()
+        choosefilterTask()
+        filterTaskList()
+    }
+
+    private fun filterTaskList() {
+        val itemList = TaskDatabase.getDatabase(requireContext()).taskDAO().getListTask()
+        val adapter = TaskAdapter(itemList, this, this, this)
+        binding.recyclerView.adapter = adapter
+
+        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return true
+            }
+
+        })
+    }
+
+    // Khởi tạo dialog sắp xếp ở dạng ẩn
+    private fun createSortDialog(){
+        binding.chooseSort.visibility = View.GONE
+    }
+
+    // Mở dialog sắp xếp
+    private fun filterTask() {
+        binding.sort.setOnClickListener {
+            if (!checkSort) {
+                binding.chooseSort.visibility = View.VISIBLE
+                binding.sort.setImageResource(R.drawable.icon_sort_right)
+                displayDimmer()
+                checkSort = true
+            }
+            else {
+                binding.chooseSort.visibility = View.GONE
+                binding.sort.setImageResource(R.drawable.icon_sort)
+                hideDimmer()
+                checkSort = false
+            }
+        }
+    }
+
+    // Chọn dạng sắp xếp
+    private fun choosefilterTask() {
+        binding.personal.setOnClickListener {
+            updateDataPersonal()
+            binding.chooseSort.visibility = View.GONE
+            binding.sort.setImageResource(R.drawable.icon_sort)
+            hideDimmer()
+            checkSort = false
+            checkboxSort = "personal"
+        }
+        binding.study.setOnClickListener {
+            updateDataStudy()
+            binding.chooseSort.visibility = View.GONE
+            binding.sort.setImageResource(R.drawable.icon_sort)
+            hideDimmer()
+            checkSort = false
+            checkboxSort = "study"
+        }
+        binding.work.setOnClickListener {
+            updateDataWork()
+            binding.chooseSort.visibility = View.GONE
+            binding.sort.setImageResource(R.drawable.icon_sort)
+            hideDimmer()
+            checkSort = false
+            checkboxSort = "work"
+        }
+        binding.none.setOnClickListener {
+            updateDataNone()
+            binding.chooseSort.visibility = View.GONE
+            binding.sort.setImageResource(R.drawable.icon_sort)
+            hideDimmer()
+            checkSort = false
+            checkboxSort = "none"
+        }
+        binding.khong.setOnClickListener {
+            updateData()
+            binding.chooseSort.visibility = View.GONE
+            binding.sort.setImageResource(R.drawable.icon_sort)
+            hideDimmer()
+            checkSort = false
+            checkboxSort = "khong"
+        }
     }
 
     // Khởi tạo recycler view
@@ -56,7 +154,7 @@ class ListFragment : Fragment(), DeleteTaskCallback, EditTaskCallback{
         val linearLayoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.recyclerView.layoutManager = linearLayoutManager
 
-        val adapter = TaskAdapter(itemList, this, this)
+        val adapter = TaskAdapter(itemList, this, this, this)
         binding.recyclerView.adapter = adapter
     }
 
@@ -69,7 +167,7 @@ class ListFragment : Fragment(), DeleteTaskCallback, EditTaskCallback{
                     startX = event.x
                     startY = event.y
                     // Tắt ViewPager2 khi di chuyển nút
-                    activity?.findViewById<ViewPager2>(R.id.view_pager_2)?.isUserInputEnabled = false
+                    turnOffViewPager()
                     isMoving = false
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -94,7 +192,7 @@ class ListFragment : Fragment(), DeleteTaskCallback, EditTaskCallback{
                 }
                 MotionEvent.ACTION_UP -> {
                     // Bật lại ViewPager2 khi không di chuyển nút
-                    activity?.findViewById<ViewPager2>(R.id.view_pager_2)?.isUserInputEnabled = true
+                    turnOnViewPager()
                     if (!isMoving) {
                         addNote()
                     }
@@ -105,10 +203,11 @@ class ListFragment : Fragment(), DeleteTaskCallback, EditTaskCallback{
     }
 
     // Thêm một task
+    @SuppressLint("NotifyDataSetChanged")
     private fun addNote() {
-        val currentTime = System.currentTimeMillis()
-        if (currentTime - lastClickTime >= CONSTANTS.DEBOUNCE_DELAY) {
-            lastClickTime = currentTime
+        val currentAddTime = System.currentTimeMillis()
+        if (currentAddTime - lastClickAddTime >= CONSTANTS.DEBOUNCE_DELAY) {
+            lastClickAddTime = currentAddTime
             val addTaskDialogFragment = AddTaskDialogFragment(object : AddTaskDialogFragmnetCallback {
                 override fun onDataTaskReceived(
                     dataTask: String,
@@ -128,6 +227,7 @@ class ListFragment : Fragment(), DeleteTaskCallback, EditTaskCallback{
             binding.dimmer.visibility = View.VISIBLE
             addTaskDialogFragment.show(parentFragmentManager, addTaskDialogFragment.tag)
         }
+
     }
 
     // Xử lí xự kiện khi click vào thùng rác
@@ -151,34 +251,111 @@ class ListFragment : Fragment(), DeleteTaskCallback, EditTaskCallback{
 
     // Xử lí sự kiện khi click vào 1 item
     override fun onItemButtonClick(item: Task) {
-        val deleteTaskDialogFragment = EditTaskDilalogFragment(object :EditTaskDialogFragmentCallback{
-            override fun onDataTaskReceived(
-                dataTask: String,
-                dataType: String,
-                dataColor: String,
-            ) {
-                item.task = dataTask
-                item.type = dataType
-                item.color = dataColor
-                TaskDatabase.getDatabase(requireContext()).taskDAO().update(item)
-                updateData()
-            }
+        val currentItemTime = System.currentTimeMillis()
+        if (currentItemTime - lastClickItemTime >= CONSTANTS.DEBOUNCE_DELAY) {
+            lastClickItemTime = currentItemTime
+            val deleteTaskDialogFragment =
+                EditTaskDilalogFragment(object : EditTaskDialogFragmentCallback {
+                    override fun onDataTaskReceived(
+                        dataTask: String,
+                        dataType: String,
+                        dataColor: String,
+                    ) {
+                        item.task = dataTask
+                        item.type = dataType
+                        item.color = dataColor
+                        TaskDatabase.getDatabase(requireContext()).taskDAO().update(item)
+                        updateData()
+                    }
 
-            override fun onHidenCallback() {
-                hideDimmer()
-            }
-        })
-        binding.dimmer.visibility = View.VISIBLE
-        deleteTaskDialogFragment.show(parentFragmentManager, deleteTaskDialogFragment.tag)
+                    override fun onHidenCallback() {
+                        hideDimmer()
+                    }
+                }, item.task, item.type)
+            binding.dimmer.visibility = View.VISIBLE
+            deleteTaskDialogFragment.show(parentFragmentManager, deleteTaskDialogFragment.tag)
+        }
     }
 
-    // Cập nhật recycler view sau khi cập nhật room
-    fun updateData() {
-        binding.recyclerView.adapter = TaskAdapter(TaskDatabase.getDatabase(requireContext()).taskDAO().getListTask(), this, this)
+    // Bật ViewPager
+    fun turnOnViewPager() {
+        activity?.findViewById<ViewPager2>(R.id.view_pager_2)?.isUserInputEnabled = true
+    }
+
+    // Tắt ViewPager
+    fun turnOffViewPager() {
+        activity?.findViewById<ViewPager2>(R.id.view_pager_2)?.isUserInputEnabled = false
     }
 
     // Bật xám màn hình khi mở dialog
     fun hideDimmer() {
         binding.dimmer.visibility = View.GONE
     }
+
+    // Tắt xám màn hình khi mở dialog
+    fun displayDimmer() {
+        binding.dimmer.visibility = View.VISIBLE
+    }
+
+    // Update danh sách khi click vào checkbox
+    override fun onCheckTask(item: Task) {
+        TaskDatabase.getDatabase(binding.root.context).taskDAO().update(item)
+        if(checkboxSort == "personal") {
+            updateDataPersonal()
+        }
+        else if(checkboxSort == "study") {
+            updateDataStudy()
+        }
+        else if(checkboxSort == "work") {
+            updateDataWork()
+        }
+        else if(checkboxSort == "none") {
+            updateDataNone()
+        }
+        else {
+            updateData()
+        }
+    }
+
+    // Cập nhật recycler view sau khi cập nhật room
+    fun updateData() {
+        binding.recyclerView.adapter = TaskAdapter(
+            TaskDatabase
+                .getDatabase(requireContext())
+                .taskDAO()
+                .getListTask(), this, this, this)
+    }
+
+    private fun updateDataNone() {
+        binding.recyclerView.adapter = TaskAdapter(
+            TaskDatabase
+                .getDatabase(requireContext())
+                .taskDAO()
+                .getListNone(), this, this, this)
+    }
+
+    private fun updateDataWork() {
+        binding.recyclerView.adapter = TaskAdapter(
+            TaskDatabase
+                .getDatabase(requireContext())
+                .taskDAO()
+                .getListWork(), this, this, this)
+    }
+
+    private fun updateDataStudy() {
+        binding.recyclerView.adapter = TaskAdapter(
+            TaskDatabase
+                .getDatabase(requireContext())
+                .taskDAO()
+                .getListStudy(), this, this, this)
+    }
+
+    private fun updateDataPersonal() {
+        binding.recyclerView.adapter = TaskAdapter(
+            TaskDatabase
+                .getDatabase(requireContext())
+                .taskDAO()
+                .getListPersonal(), this, this, this)
+    }
+
 }

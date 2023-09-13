@@ -18,9 +18,17 @@ interface TaskDAO {
     @Delete
     fun delete(task: Task)
 
-    @Query("SELECT * from task")
+    @Query("SELECT * from task ORDER BY isCompleted ASC")
     fun getListTask(): List<Task>
 
-//    @Query("SELECT * from task ORDER BY type ASC")
-//    fun getListTask(): List<Task>
+    @Query("SELECT * from task WHERE type = 'Personal' ORDER BY isCompleted ASC")
+    fun getListPersonal(): List<Task>
+
+    @Query("SELECT * from task WHERE type = 'Study' ORDER BY isCompleted ASC")
+    fun getListStudy(): List<Task>
+
+    @Query("SELECT * from task WHERE type = 'Work' ORDER BY isCompleted ASC")
+    fun getListWork(): List<Task>
+    @Query("SELECT * from task WHERE type = 'None' ORDER BY isCompleted ASC")
+    fun getListNone(): List<Task>
 }

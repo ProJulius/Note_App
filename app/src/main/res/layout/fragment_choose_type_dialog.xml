@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="24dp"
     app:cardBackgroundColor="@color/pink_dark"
-    tools:context=".view.list_page.feature.ChooseTypeDialogFragment">
+    tools:context=".view.list_page.feature_dialog.ChooseTypeDialogFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,6 +33,7 @@
                 android:text="Personal"
                 android:textColor="@color/blue"
                 android:textSize="16dp"
+                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center" />
         </LinearLayout>
@@ -59,6 +60,7 @@
                 android:text="Study"
                 android:textColor="@color/green"
                 android:textSize="16dp"
+                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center" />
         </LinearLayout>
@@ -85,6 +87,7 @@
                 android:text="Work"
                 android:textColor="@color/red"
                 android:textSize="16dp"
+                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center" />
         </LinearLayout>
@@ -111,6 +114,7 @@
                 android:text="None"
                 android:textColor="@color/black"
                 android:textSize="16dp"
+                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center" />
         </LinearLayout>

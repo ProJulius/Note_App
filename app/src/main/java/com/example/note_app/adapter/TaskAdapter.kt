@@ -1,28 +1,33 @@
 package com.example.note_app.adapter
 
+import android.annotation.SuppressLint
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.example.note_app.databinding.ItemTaskBinding
 import com.example.note_app.model.Task
 import com.example.note_app.R
-import com.example.note_app.database.TaskDatabase
-import com.example.note_app.interface_callback.DeleteTaskCallback
-import com.example.note_app.interface_callback.EditTaskCallback
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-
+import com.example.note_app.interface_callback_adapter.CheckTaskCallback
+import com.example.note_app.interface_callback_adapter.DeleteTaskCallback
+import com.example.note_app.interface_callback_adapter.EditTaskCallback
+import java.util.Locale
 
 
 class TaskAdapter(
-    private val listTask: List<Task>,
+    private var listTask: List<Task>,
     private val deleteTaskCallback: DeleteTaskCallback,
     private val editTaskCallback: EditTaskCallback,
-    ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>(){
+    private val checkTaskCallback: CheckTaskCallback,
+    ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>(), Filterable {
+
+    private var filteredTasks: List<Task> = listTask.toList()
     inner class ViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root){
+        @SuppressLint("ClickableViewAccessibility")
         fun bind(item: Task) {
             binding.textTask.text = item.task
             binding.textType.text = item.type
@@ -43,10 +48,8 @@ class TaskAdapter(
 
             binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
                 item.isCompleted = isChecked
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    TaskDatabase.getDatabase(binding.root.context).taskDAO().update(item)
-                }
+                checkTaskCallback.onCheckTask(item)
+                textCompleted(item)
             }
 
             binding.deleteTask.setOnClickListener {
@@ -55,6 +58,18 @@ class TaskAdapter(
 
             binding.mainLayout.setOnClickListener{
                 editTaskCallback.onItemButtonClick(item)
+            }
+
+            textCompleted(item)
+        }
+
+        // Hiệu ứng gạch ngang chữ nếu đã hoàn thiện Task
+        fun textCompleted(item: Task) {
+            if(item.isCompleted) {
+                binding.textTask.paintFlags =  Paint.STRIKE_THRU_TEXT_FLAG
+            }
+            else {
+                binding.textTask.paintFlags = 0
             }
         }
     }
@@ -66,11 +81,41 @@ class TaskAdapter(
 
 
     override fun getItemCount(): Int {
-        return listTask.size
+        return filteredTasks.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(listTask[position])
+        holder.bind(filteredTasks[position])
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(charSequence: CharSequence): FilterResults {
+                val searchText = charSequence.toString().lowercase()
+                val filteredList = ArrayList<Task>()
+
+
+                if (searchText.isEmpty()) {
+                    filteredList.addAll(listTask)
+                } else {
+                    for (item in listTask) {
+                        if (item.task.lowercase().contains(searchText)) {
+                            filteredList.add(item)
+                        }
+                    }
+                }
+
+                val filterResults = FilterResults()
+                filterResults.values = filteredList
+
+                return filterResults
+            }
+
+            override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
+                filteredTasks = filterResults.values as List<Task>
+                notifyDataSetChanged()
+            }
+        }
     }
 
 }

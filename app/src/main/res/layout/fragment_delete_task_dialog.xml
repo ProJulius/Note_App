@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.list_page.feature.DeleteTaskDialogFragment"
+    tools:context=".view.list_page.feature_dialog.DeleteTaskDialogFragment"
     app:cardCornerRadius="24dp"
     app:cardBackgroundColor="@color/white">
 
