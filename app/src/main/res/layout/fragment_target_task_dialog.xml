@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/background_item_note"
+    tools:context=".view.home_page.information_dialog.TargetTaskDialogFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/background_item_task"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/icon_personal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="24dp"
+            android:src="@drawable/icon_type_personal"/>
+        <TextView
+            android:id="@+id/personal"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text="Personal :"
+            android:textSize="16dp"
+            android:textColor="@color/blue"
+            android:fontFamily="@font/montserrat_bold"
+            android:paddingLeft="8dp"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/per_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="30dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/per_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="/100"
+            android:textSize="16dp"
+            android:layout_marginRight="24dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/background_item_task"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/icon_study"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="24dp"
+            android:src="@drawable/icon_type_study"/>
+        <TextView
+            android:id="@+id/study"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text="Study :"
+            android:textSize="16dp"
+            android:textColor="@color/green"
+            android:fontFamily="@font/montserrat_bold"
+            android:paddingLeft="8dp"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/stu_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="30dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/stu_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="/100"
+            android:textSize="16dp"
+            android:layout_marginRight="24dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/background_item_task"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/icon_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="24dp"
+            android:src="@drawable/icon_type_work"/>
+        <TextView
+            android:id="@+id/work"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text="Work :"
+            android:textSize="16dp"
+            android:textColor="@color/red"
+            android:fontFamily="@font/montserrat_bold"
+            android:paddingLeft="8dp"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/wor_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="30dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/wor_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="/100"
+            android:textSize="16dp"
+            android:layout_marginRight="24dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/background_item_task"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/icon_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="24dp"
+            android:src="@drawable/icon_type_none"/>
+        <TextView
+            android:id="@+id/none"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text="None :"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_bold"
+            android:paddingLeft="8dp"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/non_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="30dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/non_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="/100"
+            android:textSize="16dp"
+            android:layout_marginRight="24dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -16,15 +16,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
-        <SearchView
-            android:id="@+id/search"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:background="@drawable/background_search"
-            android:queryHint="Search for your task..."
-            android:layout_margin="15dp"
-            android:queryBackground="@null" />
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/search_txt"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:background="@drawable/background_search"
+                android:hint="Search for your task..."
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp" />
+            <ImageView
+                android:id="@+id/search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_search"
+                android:layout_gravity="center"
+                android:background="@drawable/background_search_button"
+                android:layout_marginRight="15dp"/>
+        </LinearLayout>
+        
 
         <ImageView
             android:id="@+id/sort"

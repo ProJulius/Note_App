@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.note_app.R
 import com.example.note_app.databinding.FragmentAddTaskDialogBinding
-import com.example.note_app.interface_callback_list_page.AddTaskDialogFragmnetCallback
+import com.example.note_app.task_interface_callback.AddTaskDialogFragmnetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class AddTaskDialogFragment(private val callback: AddTaskDialogFragmnetCallback) : BottomSheetDialogFragment() {

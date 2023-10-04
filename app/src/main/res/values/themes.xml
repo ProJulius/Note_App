@@ -12,4 +12,9 @@
         <item name="android:windowBackground">@drawable/background_dialog</item>
         <!-- Other style attributes for your dialog fragment -->
     </style>
+
+    <style name="DefaultDateStyle">
+        <item name="android:textColor">@android:color/black</item> <!-- Màu văn bản -->
+        <!-- Các thuộc tính khác của văn bản như textSize, textStyle, fontFamily, ... -->
+    </style>
 </resources>

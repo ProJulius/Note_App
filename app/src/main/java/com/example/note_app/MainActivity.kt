@@ -2,15 +2,24 @@ package com.example.note_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
+import com.example.note_app.database.NoteDatabase
 import com.example.note_app.databinding.ActivityMainBinding
 import com.example.note_app.view.calendar_page.CalendarFragment
 import com.example.note_app.view.home_page.HomeFragment
 import com.example.note_app.view.list_page.ListFragment
 import com.example.note_app.view.transformer.DepthPageTransformer
+import com.example.note_app.worker.MyNotificationWorker
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -24,7 +33,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewPager2.setCurrentItem(1, false)
         binding.viewPager2.setPageTransformer(DepthPageTransformer())
+
     }
+
     private fun setupMeowBottomNavigation() {
         binding.bottomNavigation.add(MeowBottomNavigation.Model(1, R.drawable.icon_calendar))
         binding.bottomNavigation.add(MeowBottomNavigation.Model(2, R.drawable.icon_home))

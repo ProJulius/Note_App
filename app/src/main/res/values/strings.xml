@@ -2,4 +2,7 @@
     <string name="app_name">Note_App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about">A product that helps remember to-do tasks and notifies notes 30 minutes in advance.\n\nFor any questions or feedback about the product, please contact via gmail:\ntoanquen13@gmail.com</string>
+    <string name="chanel_name">Channel_1</string>
+    <string name="chanel_description">Description</string>
 </resources>

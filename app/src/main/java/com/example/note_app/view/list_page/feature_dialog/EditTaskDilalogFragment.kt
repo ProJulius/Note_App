@@ -1,6 +1,5 @@
 package com.example.note_app.view.list_page.feature_dialog
 
-import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.note_app.R
 import com.example.note_app.databinding.FragmentEditTaskDilalogBinding
-import com.example.note_app.interface_callback_list_page.ChooseTypeDialogFragmentCallback
-import com.example.note_app.interface_callback_list_page.EditTaskDialogFragmentCallback
+import com.example.note_app.task_interface_callback.ChooseTypeDialogFragmentCallback
+import com.example.note_app.task_interface_callback.EditTaskDialogFragmentCallback
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class EditTaskDilalogFragment(

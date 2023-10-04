@@ -1,4 +1,4 @@
-package com.example.note_app.interface_callback_list_page
+package com.example.note_app.task_interface_callback
 
 interface DeleteTaskDialogFragmentCallback {
 

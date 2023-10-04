@@ -2,20 +2,15 @@ package com.example.note_app.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.note_app.databinding.ItemTaskBinding
 import com.example.note_app.model.Task
 import com.example.note_app.R
-import com.example.note_app.interface_callback_adapter.CheckTaskCallback
-import com.example.note_app.interface_callback_adapter.DeleteTaskCallback
-import com.example.note_app.interface_callback_adapter.EditTaskCallback
-import java.util.Locale
+import com.example.note_app.task_interface_callback.CheckTaskCallback
+import com.example.note_app.task_interface_callback.DeleteTaskCallback
+import com.example.note_app.task_interface_callback.EditTaskCallback
 
 
 class TaskAdapter(
@@ -23,7 +18,7 @@ class TaskAdapter(
     private val deleteTaskCallback: DeleteTaskCallback,
     private val editTaskCallback: EditTaskCallback,
     private val checkTaskCallback: CheckTaskCallback,
-    ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>(), Filterable {
+    ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
     private var filteredTasks: List<Task> = listTask.toList()
     inner class ViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root){
@@ -86,36 +81,6 @@ class TaskAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(filteredTasks[position])
-    }
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(charSequence: CharSequence): FilterResults {
-                val searchText = charSequence.toString().lowercase()
-                val filteredList = ArrayList<Task>()
-
-
-                if (searchText.isEmpty()) {
-                    filteredList.addAll(listTask)
-                } else {
-                    for (item in listTask) {
-                        if (item.task.lowercase().contains(searchText)) {
-                            filteredList.add(item)
-                        }
-                    }
-                }
-
-                val filterResults = FilterResults()
-                filterResults.values = filteredList
-
-                return filterResults
-            }
-
-            override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
-                filteredTasks = filterResults.values as List<Task>
-                notifyDataSetChanged()
-            }
-        }
     }
 
 }

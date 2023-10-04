@@ -29,6 +29,9 @@ interface TaskDAO {
 
     @Query("SELECT * from task WHERE type = 'Work' ORDER BY isCompleted ASC")
     fun getListWork(): List<Task>
+
     @Query("SELECT * from task WHERE type = 'None' ORDER BY isCompleted ASC")
     fun getListNone(): List<Task>
+
+
 }

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,12 +15,12 @@ import com.example.note_app.adapter.TaskAdapter
 import com.example.note_app.constants.CONSTANTS
 import com.example.note_app.database.TaskDatabase
 import com.example.note_app.databinding.FragmentListBinding
-import com.example.note_app.interface_callback_adapter.CheckTaskCallback
-import com.example.note_app.interface_callback_adapter.DeleteTaskCallback
-import com.example.note_app.interface_callback_adapter.EditTaskCallback
-import com.example.note_app.interface_callback_list_page.AddTaskDialogFragmnetCallback
-import com.example.note_app.interface_callback_list_page.DeleteTaskDialogFragmentCallback
-import com.example.note_app.interface_callback_list_page.EditTaskDialogFragmentCallback
+import com.example.note_app.task_interface_callback.CheckTaskCallback
+import com.example.note_app.task_interface_callback.DeleteTaskCallback
+import com.example.note_app.task_interface_callback.EditTaskCallback
+import com.example.note_app.task_interface_callback.AddTaskDialogFragmnetCallback
+import com.example.note_app.task_interface_callback.DeleteTaskDialogFragmentCallback
+import com.example.note_app.task_interface_callback.EditTaskDialogFragmentCallback
 import com.example.note_app.model.Task
 import com.example.note_app.view.list_page.feature_dialog.AddTaskDialogFragment
 import com.example.note_app.view.list_page.feature_dialog.DeleteTaskDialogFragment
@@ -59,26 +58,31 @@ class ListFragment : Fragment()
         createSortDialog()
         filterTask()
         choosefilterTask()
-        filterTaskList()
+        searchItem()
     }
 
-    private fun filterTaskList() {
-        val itemList = TaskDatabase.getDatabase(requireContext()).taskDAO().getListTask()
-        val adapter = TaskAdapter(itemList, this, this, this)
-        binding.recyclerView.adapter = adapter
-
-        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                adapter.filter.filter(query)
-                return false
+    private fun searchItem() {
+        binding.search.setOnClickListener {
+            val search_text = binding.searchTxt.text.trim()
+            val itemList = TaskDatabase.getDatabase(requireContext()).taskDAO().getListTask()
+            if(search_text.isEmpty()) {
+                binding.recyclerView.adapter = TaskAdapter(
+                    TaskDatabase
+                        .getDatabase(requireContext())
+                        .taskDAO()
+                        .getListTask(), this, this, this)
             }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
-                return true
+            else {
+                val itemFilter = mutableListOf<Task>()
+                for(it in itemList) {
+                    if(it.task.contains(search_text)) {
+                        itemFilter.add(it)
+                    }
+                }
+                binding.recyclerView.adapter = TaskAdapter(
+                    itemFilter, this, this, this)
             }
-
-        })
+        }
     }
 
     // Khởi tạo dialog sắp xếp ở dạng ẩn
@@ -208,7 +212,8 @@ class ListFragment : Fragment()
         val currentAddTime = System.currentTimeMillis()
         if (currentAddTime - lastClickAddTime >= CONSTANTS.DEBOUNCE_DELAY) {
             lastClickAddTime = currentAddTime
-            val addTaskDialogFragment = AddTaskDialogFragment(object : AddTaskDialogFragmnetCallback {
+            val addTaskDialogFragment = AddTaskDialogFragment(object :
+                AddTaskDialogFragmnetCallback {
                 override fun onDataTaskReceived(
                     dataTask: String,
                     dataType: String,
@@ -228,11 +233,12 @@ class ListFragment : Fragment()
             addTaskDialogFragment.show(parentFragmentManager, addTaskDialogFragment.tag)
         }
 
-    }
+    } 
 
     // Xử lí xự kiện khi click vào thùng rác
     override fun onDeleteButtonClick(item: Task) {
-        val deleteTaskDialogFragment = DeleteTaskDialogFragment(object : DeleteTaskDialogFragmentCallback{
+        val deleteTaskDialogFragment = DeleteTaskDialogFragment(object :
+            DeleteTaskDialogFragmentCallback {
             override fun confirmDelete(check: Boolean) {
                 if(check) {
                     TaskDatabase.getDatabase(requireContext()).taskDAO().delete(item)
